@@ -36,6 +36,7 @@ jobs:
       shell: pwsh
       run: |
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        dotnet add package Microsoft.NET.Sdk.Functions --version 4.0.0
         dotnet build --configuration Release --output ./output
         popd
         
