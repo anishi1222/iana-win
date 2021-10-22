@@ -17,7 +17,7 @@ env:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     environment: dev
     steps:
     - name: 'Checkout GitHub Action'
@@ -40,7 +40,7 @@ jobs:
         dotnet add package Microsoft.Azure.Functions.Worker --version 1.0.0
         dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.0.1
         dotnet add package Microsoft.Azure.Functions.Worker.Extensions.Http --version 3.0.12
-        dornet add package Microsoft.Azure.WebJobs.Extensions.Http --version 3.0.12        
+        dotnet add package Microsoft.Azure.WebJobs.Extensions.Http --version 3.0.12        
         popd
 
     - name: 'Resolve Project Dependencies Using Dotnet'
