@@ -33,6 +33,8 @@ namespace iana_win
             // 両方設定されていれば、エラーにして返す
             var bindingData = executionContext.BindingContext.BindingData;
             if(bindingData.ContainsKey("iana") && bindingData.ContainsKey("win")) {
+                tz_iana = bindingData["iana"].ToString();
+                tz_iana = bindingData["win"].ToString();
                 description = "Both query parameters (iana and win) are specified.";
                 return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.Forbidden);
             }
