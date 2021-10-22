@@ -30,6 +30,9 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+    - task: FuncToolsInstaller@0
+      inputs:
+        version: '4'
     - task: UseDotNet@2
       displayName: 'Use .NET Core sdk'
       inputs:
