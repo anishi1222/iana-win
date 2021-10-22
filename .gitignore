@@ -262,3 +262,10 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
+# .vscode
+.vscode/
+.DS_Store
+.gitignore
+
+
