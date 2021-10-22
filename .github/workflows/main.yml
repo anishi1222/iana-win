@@ -14,6 +14,7 @@ env:
   AZURE_FUNCTIONAPP_NAME: iana-win       # set this to your application's name
   AZURE_FUNCTIONAPP_PACKAGE_PATH: '.'    # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '6.0'                  # set this to the dotnet version to use
+  MSBUILDDISABLENODEREUSE: '1'
 
 jobs:
   build-and-deploy:
@@ -26,11 +27,20 @@ jobs:
     - name: func 4.x
       run: npm i -g azure-functions-core-tools@4 --unsafe-perm true  
         
-    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+    - name: Setup DotNet 6 Environment
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
         include-prerelease: True
+
+    - name: 'Replace SDK for functions'
+      shell: pwsh
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        dotnet remove package Microsoft.NET.Sdk.Functions --version 3.0.11
+        rd /s/q %userprofile%.nuget\packages\microsoft.net.sdk.functions
+        dotnet add package Microsoft.NET.Sdk.Functions --version 4.0.0
+        popd
 
     - name: 'Resolve Project Dependencies Using Dotnet'
       shell: pwsh
