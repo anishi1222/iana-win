@@ -23,16 +23,11 @@ jobs:
     - name: 'Checkout GitHub Action'
       uses: actions/checkout@master
 
-    - name: ⚙ dotnet 6.0
+    - name: ⚙ dotnet 6.0.x
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0'
+        dotnet-version: '6.0.x'
         include-prerelease: true
-
-    - name: ⚙ dotnet 3.1.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
 
     - name: ⚙ func 4.x
       run: npm i -g azure-functions-core-tools@4 --unsafe-perm true  
