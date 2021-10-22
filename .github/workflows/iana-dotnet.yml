@@ -32,7 +32,7 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
         include-prerelease: true
 
-    - name: 'Replace SDK and Nuget Packages'
+    - name: 'Resolve Project Dependencies Using Dotnet'
       shell: pwsh
       run: |
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
@@ -41,12 +41,6 @@ jobs:
         dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.0.1
         dotnet add package Microsoft.Azure.Functions.Worker.Extensions.Http --version 3.0.12
         dotnet add package Microsoft.Azure.WebJobs.Extensions.Http --version 3.0.12        
-        popd
-
-    - name: 'Resolve Project Dependencies Using Dotnet'
-      shell: pwsh
-      run: |
-        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet build --configuration Release --output ./output
         popd
 
