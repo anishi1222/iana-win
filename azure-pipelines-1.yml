@@ -36,6 +36,22 @@ stages:
         packageType: 'sdk'
         version: '6.0.x'
         includePreviewVersions: true
+    - task: DownloadGitHubNugetPackage@1
+      inputs:
+        packageName: 'Microsoft.Azure.Functions.Worker.Extensions.Http'
+        version: '3.0.12'
+    - task: DownloadGitHubNugetPackage@1
+      inputs:
+        packageName: 'Microsoft.Azure.WebJobs.Extensions.Http'
+        version: '3.0.12'
+    - task: DownloadGitHubNugetPackage@1
+      inputs:
+        packageName: 'Microsoft.Azure.Functions.Worker.Sdk'
+        version: '1.0.1'
+    - task: DownloadGitHubNugetPackage@1
+      inputs:
+        packageName: 'Microsoft.Azure.Functions.Worker'
+        version: '1.0.0'
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
