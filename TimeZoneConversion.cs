@@ -26,9 +26,9 @@ namespace iana_win
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
             var response = req.CreateResponse();
-            string tz_win="not found";
-            string tz_iana="not found";
-            string description = "";
+            string tz_win=null;
+            string tz_iana=null;
+            string description = null;
 
             // 両方設定されていれば、エラーにして返す
             var bindingData = executionContext.BindingContext.BindingData;
@@ -50,7 +50,7 @@ namespace iana_win
             if(bindingData.ContainsKey("iana")) {
                 tz_iana = bindingData["iana"].ToString();
                 if(string.IsNullOrWhiteSpace(tz_iana)) {
-                    tz_iana = "not specified";
+                    // tz_iana = "not specified";
                     description = "No query parameter for IANA timezone is specified.";
                     return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.NotFound);
                 }
@@ -68,7 +68,7 @@ namespace iana_win
             else if(bindingData.ContainsKey("win")) {
                 tz_win = bindingData["win"].ToString();
                 if(string.IsNullOrWhiteSpace(tz_win)) {
-                    tz_win = "not specified";
+                    // tz_win = "not specified";
                     description = "No query parameter for Windows timezone is specified.";
                     return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.NotFound);
                 }
