@@ -30,16 +30,16 @@ GET https://<azure functions URL>/api/timezone-conversion?{iana|win}=TimeZoneID
 ```
 GET /api/timezone-conversion?iana=Asia/Tokyo
 {
-  "iana":"Asia/Tokyo",
-  "win":"Tokyo Standard Time",
-  "description":"Windows timezone mapped to IANA timezone Asia/Tokyo is Tokyo Standard Time."
+    "iana":"Asia/Tokyo",
+    "win":"Tokyo Standard Time",
+    "description":"Windows timezone mapped to IANA timezone Asia/Tokyo is Tokyo Standard Time."
 }
 
 GET /api/timezone-conversion?win=Tokyo Standard Time
 {
-  "iana":"Asia/Tokyo",
-  "win":"Tokyo Standard Time",
-  "description":"IANA timezone mapped to Windows timezone Tokyo Standard Time is Asia/Tokyo."
+    "iana":"Asia/Tokyo",
+    "win":"Tokyo Standard Time",
+    "description":"IANA timezone mapped to Windows timezone Tokyo Standard Time is Asia/Tokyo."
 }
 ```
 
@@ -48,17 +48,17 @@ GET /api/timezone-conversion?win=Tokyo Standard Time
 ```
 GET /api/timezone-conversion
 {
-  "iana": "not found",
-  "win": "not found",
-  "description": "No query parameter (iana or win) is specified."
+    "iana": null,
+    "win": null,
+    "description": "No query parameter (iana or win) is specified."
 }
 
 GET /api/timezone-conversion?win=Tokyo Standard Time&iana=Asia/Tokyo
 StatusCode: 403
 {
-  "iana":"Asia/Tokyo",
-  "win":"Tokyo Standard Time",
-  "description":"IANA timezone mapped to Windows timezone Tokyo Standard Time is Asia/Tokyo."
+    "iana":"Asia/Tokyo",
+    "win":"Tokyo Standard Time",
+    "description":"Both query parameters (iana and win) are specified."
 }
 ```
 
@@ -77,5 +77,19 @@ GET /api/timezone-conversion?iana=Tokyo Standard Time
     "iana": "Tokyo Standard Time",
     "win": null,
     "description": "Windows timezone mapped to IANA timezone Tokyo Standard Time is not found."
+}
+
+GET /api/timezone-conversion?win
+{
+    "iana":null,
+    "win":"",
+    "description":"No query parameter for Windows timezone is specified."
+}
+
+GET /api/timezone-conversion?iana
+{
+    "iana":null,
+    "win":"",
+    "description":"No query parameter for IANA timezone is specified."
 }
 ```
