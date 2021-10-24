@@ -82,14 +82,14 @@ GET /api/timezone-conversion?iana=Tokyo Standard Time
 GET /api/timezone-conversion?win
 {
     "iana":null,
-    "win":"",
+    "win":null,
     "description":"No query parameter for Windows timezone is specified."
 }
 
 GET /api/timezone-conversion?iana
 {
     "iana":null,
-    "win":"",
+    "win":null,
     "description":"No query parameter for IANA timezone is specified."
 }
 ```
