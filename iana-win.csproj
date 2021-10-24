@@ -15,6 +15,7 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk.Analyzers" Version="1.1.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.12" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ApplicationInsights" Version="1.0.0-preview4" />
+    <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.0-rc.2.21480.5" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
