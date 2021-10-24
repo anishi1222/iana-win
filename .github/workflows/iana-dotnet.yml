@@ -50,6 +50,7 @@ jobs:
         dotnet add package Microsoft.Azure.Functions.Worker.Sdk.Analyzers --version 1.1.0
         dotnet add package Microsoft.Azure.WebJobs.Extensions.Http --version 3.0.12
         dotnet add package Microsoft.Azure.Functions.Worker.Extensions.ApplicationInsights --version 1.0.0-preview4
+        dotnet add package Microsoft.ApplicationInsights --version 2.19.0-beta1
         dotnet build --configuration Release --output ./output
         popd
 
