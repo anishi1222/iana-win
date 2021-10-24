@@ -42,6 +42,7 @@ jobs:
       run: |
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet remove package Microsoft.NET.Sdk.Functions --version 3.0.13
+        dotnet add package Microsoft.ApplicationInsights.AspNetCore --version 2.18.0
         dotnet add package Microsoft.Azure.Functions.Worker.Extensions.Http --version 3.0.13
         dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.2.0
         dotnet add package Microsoft.Azure.Functions.Worker --version 1.5.2
