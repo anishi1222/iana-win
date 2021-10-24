@@ -42,10 +42,11 @@ jobs:
       run: |
         pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
         dotnet remove package Microsoft.NET.Sdk.Functions --version 3.0.13
-        dotnet add package Microsoft.Azure.Functions.Worker --version 1.0.0
-        dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.0.1
-        dotnet add package Microsoft.Azure.Functions.Worker.Extensions.Http --version 3.0.12
-        dotnet add package Microsoft.Azure.WebJobs.Extensions.Http --version 3.0.12        
+        dotnet add package Microsoft.Azure.Functions.Worker.Extensions.Http --version 3.0.13
+        dotnet add package Microsoft.Azure.Functions.Worker.Sdk --version 1.2.0
+        dotnet add package Microsoft.Azure.Functions.Worker --version 1.5.2
+        dotnet add package Microsoft.Azure.Functions.Worker.Sdk.Analyzers --version 1.1.0
+        dotnet add package Microsoft.Azure.WebJobs.Extensions.Http --version 3.0.12
         dotnet add package Microsoft.Azure.Functions.Worker.Extensions.ApplicationInsights --version 1.0.0-preview4
         dotnet build --configuration Release --output ./output
         popd

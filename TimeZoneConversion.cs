@@ -35,6 +35,8 @@ namespace iana_win
             if(bindingData.ContainsKey("iana") && bindingData.ContainsKey("win")) {
                 tz_iana = bindingData["iana"].ToString();
                 tz_win = bindingData["win"].ToString();
+                if(string.IsNullOrWhiteSpace(tz_iana)) tz_iana = null;
+                if(string.IsNullOrWhiteSpace(tz_win)) tz_win = null;
                 description = "Both query parameters (iana and win) are specified.";
                 return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.Forbidden);
             }
@@ -50,7 +52,7 @@ namespace iana_win
             if(bindingData.ContainsKey("iana")) {
                 tz_iana = bindingData["iana"].ToString();
                 if(string.IsNullOrWhiteSpace(tz_iana)) {
-                    // tz_iana = "not specified";
+                    tz_iana = null;
                     description = "No query parameter for IANA timezone is specified.";
                     return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.NotFound);
                 }
@@ -68,7 +70,7 @@ namespace iana_win
             else if(bindingData.ContainsKey("win")) {
                 tz_win = bindingData["win"].ToString();
                 if(string.IsNullOrWhiteSpace(tz_win)) {
-                    // tz_win = "not specified";
+                    tz_win = null;
                     description = "No query parameter for Windows timezone is specified.";
                     return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.NotFound);
                 }
