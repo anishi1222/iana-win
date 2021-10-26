@@ -8,14 +8,7 @@ using Azure.Core.Serialization;
 using System;
 
 namespace iana_win
-{
-    public class TZ
-    {
-        public string iana { get; set; }
-        public string win { get; set; }
-        public string description {get; set;}
-    }
-    
+{   
     public static class TimeZoneConversion
     {
         [Function("timezone-conversion")]
@@ -28,23 +21,23 @@ namespace iana_win
             var response = req.CreateResponse();
             string tz_win=null;
             string tz_iana=null;
-            string description = null;
+            TimeZoneData tz = new TimeZoneData();
 
             // 両方設定されていれば、エラーにして返す
             var bindingData = executionContext.BindingContext.BindingData;
             if(bindingData.ContainsKey("iana") && bindingData.ContainsKey("win")) {
                 tz_iana = bindingData["iana"].ToString();
                 tz_win = bindingData["win"].ToString();
-                if(string.IsNullOrWhiteSpace(tz_iana)) tz_iana = null;
-                if(string.IsNullOrWhiteSpace(tz_win)) tz_win = null;
-                description = "Both query parameters (iana and win) are specified.";
-                return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.Forbidden);
+                if(string.IsNullOrWhiteSpace(tz_iana)) tz.iana = null;
+                if(string.IsNullOrWhiteSpace(tz_win)) tz.win = null;
+                tz.description = "Both query parameters (iana and win) are specified.";
+                return CreateResponse(req, tz, HttpStatusCode.Forbidden);
             }
 
             // 両方設定されていなければ、エラーにして返す
             if(!bindingData.ContainsKey("iana") && !bindingData.ContainsKey("win")) {
-                description = "No query parameter (iana or win) is specified.";
-                return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.Forbidden);
+                tz.description = "No query parameter (iana or win) is specified.";
+                return CreateResponse(req, tz, HttpStatusCode.Forbidden);
             }
 
             // 以下はどちらか一方に設定がある場合
@@ -52,56 +45,53 @@ namespace iana_win
             if(bindingData.ContainsKey("iana")) {
                 tz_iana = bindingData["iana"].ToString();
                 if(string.IsNullOrWhiteSpace(tz_iana)) {
-                    tz_iana = null;
-                    description = "No query parameter for IANA timezone is specified.";
-                    return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.NotFound);
+                    tz.description = "No query parameter for IANA timezone is specified.";
+                    return CreateResponse(req, tz, HttpStatusCode.NotFound);
                 }
 
                 // IANA -> Windows
                 if(TimeZoneInfo.TryConvertIanaIdToWindowsId(tz_iana, out tz_win)) {
-                    description = $"Windows timezone mapped to IANA timezone {tz_iana} is {tz_win}.";
-                    return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.OK);
+                    tz.description = $"Windows timezone mapped to IANA timezone {tz_iana} is {tz_win}.";
+                    tz.iana = tz_iana;
+                    tz.win = tz_win;
+                    return CreateResponse(req, tz, HttpStatusCode.OK);
                 }
 
                 // ここまで到達していれば、指定されたIANA timezoneがWindows timezoneに存在しない
-                description = $"Windows timezone mapped to IANA timezone {tz_iana} is not found.";
+                tz.iana = tz_iana;
+                tz.description = $"Windows timezone mapped to IANA timezone {tz_iana} is not found.";
             }
             // winが指定されている場合
             else if(bindingData.ContainsKey("win")) {
                 tz_win = bindingData["win"].ToString();
                 if(string.IsNullOrWhiteSpace(tz_win)) {
-                    tz_win = null;
-                    description = "No query parameter for Windows timezone is specified.";
-                    return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.NotFound);
+                    tz.description = "No query parameter for Windows timezone is specified.";
+                    return CreateResponse(req, tz, HttpStatusCode.NotFound);
                 }
                 // Windows -> IANA
                 if(TimeZoneInfo.TryConvertWindowsIdToIanaId(tz_win, out tz_iana)) {
-                    description = $"IANA timezone mapped to Windows timezone {tz_win} is {tz_iana}.";
-                    return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.OK);
+                    tz.win = tz_win;
+                    tz.iana = tz_iana;
+                    tz.description = $"IANA timezone mapped to Windows timezone {tz_win} is {tz_iana}.";
+                    return CreateResponse(req, tz, HttpStatusCode.OK);
                 }
 
                 // ここまで到達していれば、指定されたWindows timezoneがIANA timezoneに存在しない
-                description = $"IANA timezone mapped to Windows timezone {tz_win} is not found.";
+                tz.win = tz_win;
+                tz.description = $"IANA timezone mapped to Windows timezone {tz_win} is not found.";
             }
 
             // ここまで来るときは、not found
-            return CreateResponse(req, tz_iana, tz_win, description, HttpStatusCode.NotFound);
+            return CreateResponse(req, tz, HttpStatusCode.NotFound);
         }
 
-        static HttpResponseData CreateResponse(HttpRequestData _req, string _iana, string _win, string _description, HttpStatusCode _statusCode)
+        static HttpResponseData CreateResponse(HttpRequestData _req, TimeZoneData _tz, HttpStatusCode _statusCode)
         {
             CancellationTokenSource source = new CancellationTokenSource();
             CancellationToken token = source.Token;
 
-            var tz_conversion = new TZ
-            {
-                iana = _iana,
-                win  = _win, 
-                description = _description
-            };
-
             HttpResponseData response = _req.CreateResponse();
-            response.WriteAsJsonAsync<TZ>(tz_conversion, token);
+            response.WriteAsJsonAsync<TimeZoneData>(_tz, token);
             response.StatusCode=_statusCode;
             return response;
         }
