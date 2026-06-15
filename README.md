@@ -1,11 +1,11 @@
 # Timezone ID converter (Sample)
 
-Sample API using .NET 6 APIs to convert timezone ID between IANA and Windows.
+Sample API using .NET 10 APIs to convert timezone ID between IANA and Windows.
 This is the first API I have ever created with C#.
 
 ## Prerequisites
 
-- .NET 6
+- .NET 10
 - Azure (this API is hosted on Azure Functions.)
 - Azure CLI or PowerShell
 - Azure Functions Core tools
